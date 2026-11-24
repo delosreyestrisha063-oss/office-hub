@@ -540,3 +540,25 @@ document.getElementById("impAttendance").addEventListener("change", e => {
 /* ================= Init ================= */
 applyAdminState();
 renderCalendar();
+
+/* ================= Theme (light / dark) ================= */
+const THEME_KEY = "oh_theme";
+const themeToggle = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+  document.body.dataset.theme = theme;
+  themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
+  themeToggle.title = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+}
+
+let currentTheme = localStorage.getItem(THEME_KEY);
+if (!currentTheme) {
+  currentTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+applyTheme(currentTheme);
+
+themeToggle.addEventListener("click", () => {
+  currentTheme = currentTheme === "dark" ? "light" : "dark";
+  localStorage.setItem(THEME_KEY, currentTheme);
+  applyTheme(currentTheme);
+});
