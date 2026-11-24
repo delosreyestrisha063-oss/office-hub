@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office Hub — Events & Attendance</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">🗂️ Office Hub</div>
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="calendar">📅 Calendar</button>
+    <button class="tab admin-only hidden" data-tab="manage">📅 Manage Events</button>
+    <button class="tab admin-only hidden" data-tab="attendance">📋 Attendance</button>
+    <button class="tab admin-only hidden" data-tab="excel">📊 Excel Connection</button>
+  </nav>
+  <div class="topbar-right">
+    <span id="loginStatus" class="login-status"></span>
+    <button id="loginBtn" class="btn btn-outline">🔐 Admin Login</button>
+    <button id="logoutBtn" class="btn btn-outline hidden">🚪 Logout</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ CALENDAR (everyone, read-only) ============ -->
+  <section id="tab-calendar" class="panel">
+    <div class="card">
+      <div class="cal-toolbar">
+        <button id="calPrev" class="btn">◀</button>
+        <h2 id="calTitle">Month Year</h2>
+        <button id="calNext" class="btn">▶</button>
+        <button id="calToday" class="btn btn-outline">Today</button>
+      </div>
+      <div class="cal-weekdays">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <p class="hint">Click any day to view its events. (Read-only view.)</p>
+    </div>
+  </section>
+
+  <!-- ============ MANAGE EVENTS (admin) ============ -->
+  <section id="tab-manage" class="panel hidden">
+    <div class="card">
+      <div class="cal-toolbar">
+        <button id="mgrPrev" class="btn">◀</button>
+        <h2 id="mgrTitle">Month Year</h2>
+        <button id="mgrNext" class="btn">▶</button>
+        <button id="mgrToday" class="btn btn-outline">Today</button>
+      </div>
+      <div class="cal-weekdays">
+        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      </div>
+      <div class="cal-grid" id="mgrGrid"></div>
+      <p class="hint">Click any day to add an event, or an existing event chip to edit/delete it.</p>
+    </div>
+  </section>
+
+  <!-- ============ ATTENDANCE (admin) ============ -->
+  <section id="tab-attendance" class="panel hidden">
+    <div class="card">
+      <div class="row-toolbar">
+        <h2>📋 Attendance Records</h2>
+        <button id="attAdd" class="btn btn-primary">➕ Add Record</button>
+      </div>
+      <div class="filters">
+        <label>Employee:
+          <select id="filterEmployee"></select>
+        </label>
+        <label>From:
+          <input type="date" id="filterFrom">
+        </label>
+        <label>To:
+          <input type="date" id="filterTo">
+        </label>
+        <button id="filterClear" class="btn btn-outline">Clear Filters</button>
+      </div>
+      <div class="table-wrap">
+        <table id="attTable">
+          <thead>
+            <tr><th>Date</th><th>Employee</th><th>Status</th><th>Time In</th><th>Time Out</th><th>Remarks</th><th>Actions</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p id="attCount" class="hint"></p>
+    </div>
+  </section>
+
+  <!-- ============ EXCEL CONNECTION (admin) ============ -->
+  <section id="tab-excel" class="panel hidden">
+    <div class="card">
+      <h2>📊 Excel Connection</h2>
+      <p class="hint">Export opens directly in Excel. To import your sheet back, save your Excel file as <strong>“CSV UTF-8”</strong> first, then upload it below.</p>
+
+      <div class="excel-grid">
+        <div class="excel-box">
+          <h3>⬇️ Export</h3>
+          <button class="btn btn-primary block" id="expEvents">Export Events (CSV)</button>
+          <button class="btn btn-primary block" id="expAttendance">Export Attendance (CSV)</button>
+        </div>
+        <div class="excel-box">
+          <h3>📄 Template</h3>
+          <button class="btn block" id="tplEvents">Download Events Template</button>
+          <button class="btn block" id="tplAttendance">Download Attendance Template</button>
+        </div>
+        <div class="excel-box">
+          <h3>⬆️ Import</h3>
+          <label class="file-label">Upload Events CSV
+            <input type="file" id="impEvents" accept=".csv">
+          </label>
+          <label class="file-label">Upload Attendance CSV
+            <input type="file" id="impAttendance" accept=".csv">
+          </label>
+          <p class="hint">Import merges: existing records with the same ID/key are updated, new ones are added.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ MODAL (day view / add / edit everything) ============ -->
+<div id="modal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h3 id="modalTitle">Detail</h3>
+      <button id="modalClose" class="btn btn-ghost">✕</button>
+    </div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
